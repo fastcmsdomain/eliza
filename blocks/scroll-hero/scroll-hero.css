@@ -1,0 +1,425 @@
+/* Scroll Hero Block - Franklin Component CSS */
+
+/* Parallax Cover Effect - each section covers the viewport and slides over the previous */
+
+.scroll-hero-container .scroll-hero-wrapper {
+  min-width: 100vw;
+}
+
+/* Track - provides scroll height for the fixed sections. Height set dynamically by JS. */
+.scroll-hero .scroll-hero-track {
+  position: relative;
+  width: 100%;
+  padding: 0;
+}
+
+/* Section structure - all sections fixed, stacked with z-index.
+   GSAP translates each later section up from below (yPercent 100 -> 0)
+   to cover the static previous one. No clip-path. */
+.scroll-hero .screen-section {
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  background-color: #00203e;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* .screen contains the actual content */
+.scroll-hero .screen-section .screen {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  background-color: #00203e;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Each section stacks above the previous - higher z-index for later sections.
+   20 slides covers any realistic deck; extend the list if a site ever needs more. */
+.scroll-hero .screen-section:nth-child(1) { z-index: 1; }
+.scroll-hero .screen-section:nth-child(2) { z-index: 2; }
+.scroll-hero .screen-section:nth-child(3) { z-index: 3; }
+.scroll-hero .screen-section:nth-child(4) { z-index: 4; }
+.scroll-hero .screen-section:nth-child(5) { z-index: 5; }
+.scroll-hero .screen-section:nth-child(6) { z-index: 6; }
+.scroll-hero .screen-section:nth-child(7) { z-index: 7; }
+.scroll-hero .screen-section:nth-child(8) { z-index: 8; }
+.scroll-hero .screen-section:nth-child(9) { z-index: 9; }
+.scroll-hero .screen-section:nth-child(10) { z-index: 10; }
+.scroll-hero .screen-section:nth-child(11) { z-index: 11; }
+.scroll-hero .screen-section:nth-child(12) { z-index: 12; }
+.scroll-hero .screen-section:nth-child(13) { z-index: 13; }
+.scroll-hero .screen-section:nth-child(14) { z-index: 14; }
+.scroll-hero .screen-section:nth-child(15) { z-index: 15; }
+.scroll-hero .screen-section:nth-child(16) { z-index: 16; }
+.scroll-hero .screen-section:nth-child(17) { z-index: 17; }
+.scroll-hero .screen-section:nth-child(18) { z-index: 18; }
+.scroll-hero .screen-section:nth-child(19) { z-index: 19; }
+.scroll-hero .screen-section:nth-child(20) { z-index: 20; }
+
+.scroll-hero .screen-inner {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  background-color: #00203e;
+}
+
+/* Background image setup - full viewport cover */
+.scroll-hero .background {
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.scroll-hero .background .img {
+  background-color: #00203e;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: block;
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.scroll-hero .background .img::after {
+  background: linear-gradient(180deg, transparent 0%, rgb(0 0 0 / 60%) 100%);
+  bottom: 0;
+  content: '';
+  height: 50vh;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+@media (width <= 992px) {
+  .scroll-hero .background .img::after {
+    background: linear-gradient(180deg, transparent 0%, rgb(0 0 0 / 80%) 100%);
+    height: 60vh;
+  }
+}
+
+/* Scroll-driven darkening overlay - sits above the image, below the text.
+   GSAP animates its opacity 0 -> 1 as the text shifts, so the image goes from
+   no overlay to a 0.5-alpha veil exactly when the title reaches the top.
+   Triggers on every slide. */
+.scroll-hero .scroll-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 1; /* above .background (0), below .strapline-2 (9) / .strapline (10) */
+  background: rgb(0 32 62 / 50%);
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* Last slide section - logo above strapline, background stays permanently darkened */
+.scroll-hero .section-last-slide .background {
+  position: relative;
+}
+
+.scroll-hero .section-last-slide .background::before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgb(0 32 62 / 80%);
+}
+
+/* Logo positioned above strapline in last-slide, scrolls with text */
+.scroll-hero .section-last-slide .strapline-logo {
+  display: block;
+  width: 125px;
+  height: auto;
+  margin: 0 auto 20px;
+  object-fit: contain;
+}
+
+/* Progress nav label text - placed here (ahead of .progress-nav's other rules
+   further down) purely to satisfy stylelint's specificity ordering against
+   .strapline-2 .subtitle span below; it does not interact with strapline at all. */
+.scroll-hero .progress-nav li span {
+  color: #fff;
+  display: -webkit-box;
+  font-size: var(--body-font-size-xs);
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  line-clamp: 1;
+  line-height: 1.3;
+  left: 100%;
+  margin-left: 10px;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+  visibility: hidden;
+  white-space: nowrap;
+}
+
+/* Text positioning and styling - centered in viewport */
+.scroll-hero .strapline {
+  left: 0;
+  margin: 0 auto;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
+  transform-origin: center center;
+  z-index: 10;
+  width: 800px;
+  color: #fff;
+  font-family: var(--heading-font-family);
+  opacity: 1;
+  will-change: top, transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* Second strapline for subtitle - positioned at center (Wellington College style) */
+.scroll-hero .strapline-2 {
+  left: 0;
+  margin: 0 auto;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
+  transform-origin: center center;
+  z-index: 9;
+  color: #fff;
+  font-family: var(--heading-font-family);
+  width: 100%;
+  opacity: 1;
+  will-change: top, transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* Responsive text styling - Desktop first */
+.scroll-hero .strapline .main-title {
+  font-family: var(--body-font-family);
+  line-height: 1.1;
+  text-shadow: 0 0 18px rgb(0 0 0 / 25%);
+  margin: 0;
+  position: relative;
+  top: 0;
+}
+
+.scroll-hero .strapline-2 .subtitle {
+  font-weight: 400;
+  text-shadow: 0 0 18px rgb(0 0 0 / 25%);
+  margin: 0 auto;
+  position: relative;
+  top: 0;
+  max-width: 40%;
+}
+
+/* Title parts styling */
+.scroll-hero .strapline .main-title .title-part {
+  display: block;
+  margin: 5px 0;
+}
+
+.scroll-hero .strapline .main-title .title-part-0 {
+  font-size: var(--heading-font-size-xxl); /* Starting size; JS scales it down as it shifts to the top */
+}
+
+.scroll-hero .strapline .main-title .title-part-1 {
+  font-family: var(--body-font-family);
+  font-size: clamp(1.25rem, 1.5vw + 1rem, 2.5rem);
+  line-height: 1.5;
+  font-weight: 300;
+  opacity: 0.9;
+}
+
+@media (width <= 920px) {
+  .scroll-hero .strapline .main-title .title-part-1 {
+    font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+  }
+}
+
+/* Subtitle parts styling */
+.scroll-hero .strapline-2 .subtitle .subtitle-part {
+  display: block;
+  margin: 3px 0;
+}
+
+.scroll-hero .strapline-2 .subtitle span {
+  font-size: clamp(1rem, 1.5vw + 1rem, 1.3rem);
+  font-weight: 400;
+  padding-bottom: 0.5rem;
+}
+
+@media (width <= 920px) {
+  .scroll-hero .strapline-2 .subtitle span {
+    font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+  }
+}
+
+@media (width <= 992px) {
+  .scroll-hero .strapline-2 .subtitle {
+    max-width: 80%;
+  }
+}
+
+/* Responsive font sizes */
+@media (width <= 992px) {
+  .scroll-hero .strapline {
+    width: 80%;
+  }
+
+  .scroll-hero .strapline .main-title {
+    line-height: 1.2;
+  }
+
+  .scroll-hero .strapline .main-title .title-part-0 {
+    font-size: clamp(2.5rem, 4vw + 1rem, 4rem);
+  }
+}
+
+@media (width <= 480px) {
+  .scroll-hero .strapline .main-title {
+    line-height: 1.3;
+  }
+
+  .scroll-hero .strapline .main-title .title-part-0 {
+    font-size: clamp(1.2rem, 4vw + 1rem, 2rem);
+  }
+}
+
+/* Progress Navigation (floating left side) */
+.scroll-hero .progress-nav {
+  display: block;
+  left: 40px;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (width <= 992px) {
+  .scroll-hero .progress-nav {
+    display: none;
+  }
+}
+
+.scroll-hero .progress-nav li {
+  cursor: pointer;
+  height: 2px;
+  padding: 8px 0;
+  position: relative;
+  transition: all 0.3s ease;
+  width: 14px;
+  margin-bottom: 8px;
+}
+
+.scroll-hero .progress-nav li::before {
+  background: rgb(255 255 255 / 50%);
+  content: '';
+  height: 2px;
+  left: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+.scroll-hero .progress-nav li:last-child span,
+.scroll-hero .progress-nav li:first-child span {
+  display: none;
+}
+
+.scroll-hero .progress-nav li.is-active {
+  overflow: hidden;
+  width: 30px;
+}
+
+.scroll-hero .progress-nav li.is-active::after {
+  animation: scroll-hero-nav-progress 1.5s linear infinite;
+  background-color: #fff;
+  content: '';
+  height: 2px;
+  position: absolute;
+  top: calc(50% - 1px);
+  width: 100%;
+}
+
+.scroll-hero .progress-nav li:hover {
+  width: 30px;
+}
+
+.scroll-hero .progress-nav li:hover::before {
+  background: #fff;
+}
+
+.scroll-hero .progress-nav li:hover span {
+  opacity: 1;
+  visibility: visible;
+}
+
+@keyframes scroll-hero-nav-progress {
+  0% {
+    transform: translateX(-50px);
+  }
+
+  100% {
+    transform: translateX(50px);
+  }
+}
+
+/* Default fallback styling if GSAP fails to load / reduced motion.
+   Sections stack vertically and scroll normally. */
+.scroll-hero.no-gsap .scroll-hero-track {
+  height: auto !important;
+}
+
+.scroll-hero.no-gsap .screen-section {
+  position: relative;
+}
+
+.scroll-hero.no-gsap .screen {
+  position: relative;
+}
+
+.scroll-hero.no-gsap .strapline,
+.scroll-hero.no-gsap .strapline-2 {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1;
+}
+
+/* No-GSAP fallback positions (GSAP controls `top` inline when available) */
+@media (width <= 992px) {
+  .scroll-hero.no-gsap .strapline {
+    top: 40%;
+  }
+
+  .scroll-hero.no-gsap .strapline-2 {
+    top: 60%;
+  }
+}
